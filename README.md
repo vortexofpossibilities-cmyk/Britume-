@@ -1,60 +1,40 @@
-# Britume — early web MVP
+# BRITUME — organized native app foundation
 
-**Original social/community concept:** connect with people, discover communities, and keep media you have permission to use.
+Expo + React Native + TypeScript + Expo Router + Supabase.
 
-This is a responsive, installable web prototype intended as the first repository milestone. It is deliberately honest about its current limitations: it is **not yet a production social network** and it has no remote database, authentication, shared feed, moderation service, licensed music catalog, or real-time communications backend.
+## Separate screens
+- `app/(auth)/sign-in.tsx`
+- `app/(auth)/sign-up.tsx`
+- `app/(tabs)/index.tsx` — Home/feed
+- `app/(tabs)/discover.tsx` — real public profiles
+- `app/(tabs)/create.tsx` — create text posts
+- `app/(tabs)/offline.tsx` — honest empty state until downloads are implemented
+- `app/(tabs)/profile.tsx` — edit profile, visibility, sign out, Settings shortcut
+- `app/settings.tsx` — separate Settings screen
+- `src/auth/AuthProvider.tsx` — session state
+- `src/lib/supabase.ts` — backend client
+- `supabase/schema.sql` — starter database schema and RLS policies
 
-## What works in this preview
+## Setup
+1. Install Node.js LTS and Git on a computer.
+2. Create a project at Supabase.
+3. In Supabase SQL Editor, run `supabase/schema.sql`.
+4. Copy `.env.example` to `.env` and fill in your Supabase project URL and publishable/anon key.
+5. Run:
+   ```sh
+   npm install
+   npx expo install --fix
+   npm run typecheck
+   npx expo start
+   ```
+6. Open the project in Expo Go or an Android emulator. Confirm signup, email verification, login, profile editing, public-profile discovery, text-post publishing, feed refresh, and sign out.
 
-- Responsive desktop and mobile navigation
-- Sample feed, discover page, sample profiles, and community cards
-- Create local text/photo posts; choose a local visibility label
-- Like local posts, delete local posts, and browse sample content
-- Edit a local profile and save preferences in browser storage
-- Follow sample profiles and join sample circles locally
-- Select personal audio files and list them in a local preview library
-- PWA manifest and service worker for caching the app shell
+## Important
+- No seeded/fake profiles, posts, songs, likes, or counts.
+- Supabase project URL and publishable/anon key are client values; NEVER put a `service_role` key in the app or commit secrets.
+- The public/private profile setting affects profile discovery. Full private-account semantics, follow approvals, and visibility of all related data need additional implementation and security tests before launch.
+- Photo/video upload, comments, likes, follows, communities, messaging/calls, music, offline downloads, notifications, report/block tools, and moderation are not implemented in this first foundation.
+- A working app foundation is not the same as a production-ready social network or Google Play approval.
 
-## What is not implemented yet
-
-- Secure sign-up/login, account recovery, or cross-device profiles
-- Shared cloud posts, comments, follow relationships, or communities
-- Enforced public/private access control; current privacy controls are UI-only
-- Actual audio upload, durable offline audio playback, video downloads, or media licensing
-- Expiring shared stories, voice messaging, calls, live streaming, push notifications
-- Reporting, blocking, moderation queues, rate limiting, production analytics
-
-Do not collect real users' sensitive data or announce this preview as a secure production social network until these controls exist.
-
-## Run locally
-
-This is a static site and needs no build step. Serve this directory over HTTP, for example:
-
-```bash
-python -m http.server 8000
-```
-
-Then open `http://localhost:8000`.
-
-## Publish on GitHub Pages
-
-1. Create a repository named `britume` in your own GitHub account.
-2. Upload all files in this folder, keeping the `assets/` directory.
-3. Open **Settings → Pages** in the repository.
-4. Select **Deploy from a branch**, choose `main` and `/ (root)`, then save.
-5. Wait for the Pages deployment to finish and test the resulting site on desktop and Android.
-
-For a project site at `https://OWNER.github.io/britume/`, this app uses relative paths. The service worker and manifest are scoped to the project directory.
-
-## Suggested production architecture
-
-- Frontend: React + Vite or a carefully maintained component-based web app
-- Backend: authenticated API + PostgreSQL database + object storage
-- Media: upload validation, file-size/type limits, rights metadata, signed URLs, and deletion lifecycle
-- Security: server-side authorization, secure sessions, privacy enforcement, rate limits, abuse reports, blocking, audit logs
-- Realtime: separately scoped messaging/call/live-stream infrastructure
-- Android: Capacitor wrapper or a native client after the web experience and backend contracts are stable
-
-## Launch gate
-
-Before public production release, implement and test authentication, server-enforced privacy, reporting/blocking, media upload security, deletion/retention policies, terms, privacy notice, and a moderation response process. Confirm music and video licensing before distributing other people's content.
+## Android release
+Before release, confirm the Android package ID, configure EAS Build, create a signed Android App Bundle, test on real devices, publish a privacy policy, complete Play Console Data safety/content declarations, and implement user safety/moderation requirements. Google Play review and any required testing period are separate from generating the build.
