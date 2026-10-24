@@ -1,0 +1,13 @@
+{
+  "name": "Britume — Find your people",
+  "short_name": "Britume",
+  "description": "Connect, discover, and keep what you love.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0f1d",
+  "theme_color": "#0a0f1d",
+  "icons": [
+    { "src": "assets/britume-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
